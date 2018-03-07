@@ -54,12 +54,12 @@ module.exports = {
         target: 'components/Root/Root.jsx',
         patch: [
           {
-            pattern: /import.*?from '.\/screens\/.*?';\s/,
-            append: `import ${pascal} from './screens/${pascal}';\n`
+            pattern: /import.*?from '..\/..\/screens\/.*?';\s/,
+            append: `import ${pascal} from '../../screens/${pascal}';\n`
           },
           {
             pattern: /( *)<Route .*?\n(?!( *)<Route)/,
-            custom: (match, spaces) => `${match}${spaces}<Route path="/{{ name }}" component={ ${pascal} } exact />\n`
+            custom: (match, spaces) => `${spaces}<Route path="/{{ name }}" component={ ${pascal} } exact />\n${match}`
           }
         ]
       }
