@@ -59,7 +59,7 @@ module.exports = {
           },
           {
             pattern: /( *)<Route .*?\n(?!( *)<Route)/,
-            custom: (match, spaces) => `${spaces}<Route path="/{{ name }}" component={ ${pascal} } exact />\n${match}`
+            custom: (match, spaces) => `${spaces}<Route path="/{{ name }}" component={${pascal}} exact />\n${match}`
           }
         ]
       }
