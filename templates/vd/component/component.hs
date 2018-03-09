@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import styles from './{{pascalCased}}.styles';
+import { providers } from '../../../utils';
 
 export class {{pascalCased}} extends Component {
   static propTypes = {};
@@ -17,4 +18,7 @@ export class {{pascalCased}} extends Component {
   }
 }
 
-export default withStyles(styles)({{pascalCased}});
+export default providers(
+  {{pascalCased}},
+  withStyles(styles)
+);
