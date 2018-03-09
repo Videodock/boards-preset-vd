@@ -164,8 +164,10 @@ module.exports = {
               custom : function (match, group1) {
                 if (group1 > `${params.name}Sagas` && !params.updatedSagasImport) {
                   params.updatedSagasImport = true;
+
                   return `import {{name}}Sagas from './{{pascalCased}}';\n${match}`
                 }
+
                 return match;
               }
             }, {
@@ -173,8 +175,10 @@ module.exports = {
               custom : function (match, group1, group2) {
                 if (group2 > `${params.name}Sagas` && !params.updatedSagasCall) {
                   params.updatedSagasCall = true;
+
                   return `${group1}${params.name}Sagas(),\n${match}`
                 }
+
                 return match;
               }
             }, {
