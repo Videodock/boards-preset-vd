@@ -152,19 +152,43 @@ module.exports = {
     },
 
     sagas: [
-      { task: 'generate', target: `sagas/${pascal}.sagas.js`, template: 'sagas/sagas.hs' },
+      { task: 'generate', target: `sagas/${pascal}/${pascal}.sagas.js`, template: 'sagas/sagas.hs' },
+      { task: 'generate', target: `sagas/${pascal}/index.js`, template: 'sagas/index.hs' },
       {
-        task: 'modify',
-        target: `sagas/index.js`,
-        patch: [
-          {
-            pattern: /\nexport/,
-            prepend: [
-              `import * as ${pascal}Types from '../redux/${pascal}/${pascal}.types';`,
-              `import * as ${pascal}Sagas from './${pascal}.sagas';`
-            ].join('\n') + '\n'
-          }
-        ]
+        dynamicTask: params => ({
+          task: 'modify',
+          target: 'sagas/index.js',
+          patch: [
+            {
+              pattern: /^import (\w+) from '.\/\w+';\s/gm,
+              custom : function (match, group1) {
+                if (group1 > `${params.name}Sagas` && !params.updatedSagasImport) {
+                  params.updatedSagasImport = true;
+
+                  return `import {{name}}Sagas from './{{pascalCased}}';\n${match}`
+                }
+
+                return match;
+              }
+            }, {
+              pattern: /^( +)(\w+Sagas)\(\),\n/gm,
+              custom : function (match, group1, group2) {
+                if (group2 > `${params.name}Sagas` && !params.updatedSagasCall) {
+                  params.updatedSagasCall = true;
+
+                  return `${group1}${params.name}Sagas(),\n${match}`
+                }
+
+                return match;
+              }
+            }, {
+              pattern: /\nexport/,
+              custom : match => params.updatedSagasImport ? match : `import {{name}}Sagas from './${pascal}';\n${match}`
+            }, {
+              pattern: /( +)]\);/g,
+              custom : (match, spaces) => params.updatedSagasCall ? match : `${spaces}  {{name}}Sagas(),\n${match}`
+            }]
+        })
       }
     ],
 
@@ -172,7 +196,7 @@ module.exports = {
       { definedTask: 'vd:typeUpper' },
       {
         task: 'modify',
-        target: `sagas/index.js`,
+        target: `sagas/${pascal}/index.js`,
         patch: [
           {
             pattern: /\s*]\);/,
@@ -182,7 +206,7 @@ module.exports = {
       },
       {
         task: 'modify',
-        target: `sagas/${pascal}.sagas.js`,
+        target: `sagas/${pascal}/${pascal}.sagas.js`,
         patch: [
           {
             pattern: /\n$/,
