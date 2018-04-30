@@ -1,6 +1,5 @@
 const pascal = '{{pascalCased}}';
 const containers = `containers/${pascal}`;
-const components = `components/${pascal}`;
 const tiles = `components/Tile/${pascal}`;
 const screens = `screens/${pascal}`;
 const redux = `redux/${pascal}`;
@@ -8,6 +7,11 @@ const redux = `redux/${pascal}`;
 module.exports = {
   // Where will you keep your boilerplate templates?
   templateRoot: __dirname + '/templates/vd',
+
+  parameters: {
+    componentsPath: `components/${pascal}`,
+    rootComponentPath: 'components/Root/Root.jsx',
+  },
 
   tasks: {
     // Dumps all the tasks to the cli.
@@ -20,11 +24,11 @@ module.exports = {
     },
     component: [
       { task: params => Object.assign(params, { dirUp: '' }) },
-      { task: 'generate', target: `${components}/index.js`, template: 'component/index.hs' },
-      { task: 'generate', target: `${components}/${pascal}.jsx`, template: 'component/component.hs' },
-      { task: 'generate', target: `${components}/${pascal}.styles.js`, template: 'component/styles.hs' },
-      { task: 'generate', target: `${components}/${pascal}.stories.jsx`, template: 'component/stories.hs' },
-      { task: 'generate', target: `${components}/${pascal}.test.jsx`, template: 'component/test.hs' }
+      { task: 'generate', target: `{{componentsPath}}/index.js`, template: 'component/index.hs' },
+      { task: 'generate', target: `{{componentsPath}}/${pascal}.jsx`, template: 'component/component.hs' },
+      { task: 'generate', target: `{{componentsPath}}/${pascal}.styles.js`, template: 'component/styles.hs' },
+      { task: 'generate', target: `{{componentsPath}}/${pascal}.stories.jsx`, template: 'component/stories.hs' },
+      { task: 'generate', target: `{{componentsPath}}/${pascal}.test.jsx`, template: 'component/test.hs' }
     ],
 
     tile: [
@@ -51,7 +55,7 @@ module.exports = {
       { task: 'generate', target: `${screens}/${pascal}.styles.js`, template: 'screen/styles.hs' },
       {
         task: 'modify',
-        target: 'components/Root/Root.jsx',
+        target: `{{rootComponentPath}}`,
         patch: [
           {
             pattern: /import.*?from '..\/..\/screens\/.*?';\s/,
@@ -134,7 +138,7 @@ module.exports = {
         patch: [
           {
             pattern: /\s$/,
-            append: '\nexport const {{type}} = () => ({type: types.{{typeUpper}}});\n'
+            append: '\nexport const {{type}} = () => ({ type: types.{{typeUpper}} });\n'
           }
         ]
       }
@@ -161,7 +165,7 @@ module.exports = {
           patch: [
             {
               pattern: /^import (\w+) from '.\/\w+';\s/gm,
-              custom : function (match, group1) {
+              custom: function (match, group1) {
                 if (group1 > `${params.name}Sagas` && !params.updatedSagasImport) {
                   params.updatedSagasImport = true;
 
@@ -172,7 +176,7 @@ module.exports = {
               }
             }, {
               pattern: /^( +)(\w+Sagas)\(\),\n/gm,
-              custom : function (match, group1, group2) {
+              custom: function (match, group1, group2) {
                 if (group2 > `${params.name}Sagas` && !params.updatedSagasCall) {
                   params.updatedSagasCall = true;
 
@@ -183,10 +187,10 @@ module.exports = {
               }
             }, {
               pattern: /\nexport/,
-              custom : match => params.updatedSagasImport ? match : `import {{name}}Sagas from './${pascal}';\n${match}`
+              custom: match => params.updatedSagasImport ? match : `import {{name}}Sagas from './${pascal}';\n${match}`
             }, {
               pattern: /( +)]\);/g,
-              custom : (match, spaces) => params.updatedSagasCall ? match : `${spaces}  {{name}}Sagas(),\n${match}`
+              custom: (match, spaces) => params.updatedSagasCall ? match : `${spaces}  {{name}}Sagas(),\n${match}`
             }]
         })
       }
@@ -221,11 +225,23 @@ module.exports = {
     api: [
       { definedTask: 'vd:typeUpper' },
       { definedTask: 'vd:fullAction', sync: true },
-      { definedTask: 'vd:action', prepare: params => { params.type += 'Success' }, sync: true },
-      { definedTask: 'vd:action', prepare: params => { params.type += 'Failure' }, sync: true },
+      {
+        definedTask: 'vd:action', prepare: params => {
+          params.type += 'Success'
+        }, sync: true
+      },
+      {
+        definedTask: 'vd:action', prepare: params => {
+          params.type += 'Failure'
+        }, sync: true
+      },
     ],
 
     // Utility tasks
-    typeUpper: { task: parameters => Object.assign(parameters, { typeUpper: parameters.type.replace(/([A-Z])/g, c => `_${c}`).toUpperCase() }) },
+    typeUpper: {
+      task: parameters => Object.assign(parameters, {
+        typeUpper: parameters.type.replace(/([A-Z])/g, c => `_${c}`).toUpperCase()
+      })
+    },
   }
 };
