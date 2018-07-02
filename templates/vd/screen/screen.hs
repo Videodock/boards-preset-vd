@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Typography } from 'material-ui';
-import {Helmet} from "react-helmet";
+import {Helmet} from 'react-helmet';
 import { withStyles } from 'material-ui/styles';
-import styles from './{{pascalCased}}.styles';
 import { providers } from '../../utils';
+import styles from './{{pascalCased}}.styles';
 
 export class {{pascalCased}} extends Component {
   render() {
@@ -14,9 +14,6 @@ export class {{pascalCased}} extends Component {
           <title>{{pascalCased}} screen</title>
           <meta name="description" content="{{pascalCased}} screen description" />
           <meta property="og:title" content="{{pascalCased}}" />
-          <meta property="og:url" content="" />
-          <meta property="og:type" content="" />
-          <meta property="og:image" content="" />
         </Helmet>
         <header>
           <Typography type="title">Welcome to the "{{pascalCased}}" screen</Typography>
