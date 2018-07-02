@@ -28,7 +28,7 @@ module.exports = {
       { task: 'generate', target: `{{componentsPath}}/${pascal}.jsx`, template: 'component/component.hs' },
       { task: 'generate', target: `{{componentsPath}}/${pascal}.styles.js`, template: 'component/styles.hs' },
       { task: 'generate', target: `{{componentsPath}}/${pascal}.stories.jsx`, template: 'component/stories.hs' },
-      { task: 'generate', target: `{{componentsPath}}/${pascal}.test.jsx`, template: 'component/test.hs' }
+      { task: 'generate', target: `{{componentsPath}}/${pascal}.test.jsx`, template: 'component/component.test.hs' }
     ],
 
     tile: [
@@ -37,7 +37,7 @@ module.exports = {
       { task: 'generate', target: `${tiles}/${pascal}.jsx`, template: 'component/component.hs' },
       { task: 'generate', target: `${tiles}/${pascal}.styles.js`, template: 'component/styles.hs' },
       { task: 'generate', target: `${tiles}/${pascal}.stories.jsx`, template: 'component/stories.hs' },
-      { task: 'generate', target: `${tiles}/${pascal}.test.jsx`, template: 'component/test.hs' }
+      { task: 'generate', target: `${tiles}/${pascal}.test.jsx`, template: 'component/component.test.hs' }
     ],
 
     container: [
@@ -46,7 +46,7 @@ module.exports = {
       { task: 'generate', target: `${containers}/${pascal}.jsx`, template: 'component/container.hs' },
       { task: 'generate', target: `${containers}/${pascal}.styles.js`, template: 'component/styles.hs' },
       { task: 'generate', target: `${containers}/${pascal}.stories.jsx`, template: 'component/stories.hs' },
-      { task: 'generate', target: `${containers}/${pascal}.test.jsx`, template: 'component/test.hs' }
+      { task: 'generate', target: `${containers}/${pascal}.test.jsx`, template: 'component/container.test.hs' }
     ],
 
     screen: [
