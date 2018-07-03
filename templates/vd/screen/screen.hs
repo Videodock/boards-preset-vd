@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Typography } from 'material-ui';
-import {Helmet} from 'react-helmet';
-import { withStyles } from 'material-ui/styles';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import { Helmet } from 'react-helmet';
 import { providers } from '../../utils';
 import styles from './{{pascalCased}}.styles';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { baseProvided } from '../../../testUtils';
+import { baseProvided } from '../../testUtils';
 import {{pascalCased}} from './{{pascalCased}}';
 
 test('renders without crashing', () => {
