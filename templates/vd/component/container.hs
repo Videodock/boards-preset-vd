@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import styles from './{{pascalCased}}.styles';
 import { providers } from '../../utils';
+import styles from './{{pascalCased}}.styles';
 
 class {{pascalCased}} extends Component {
   static propTypes = {};
