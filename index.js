@@ -52,6 +52,7 @@ module.exports = {
     screen: [
       { task: 'generate', target: `${screens}/index.jsx`, template: 'screen/index.hs' },
       { task: 'generate', target: `${screens}/${pascal}.jsx`, template: 'screen/screen.hs' },
+      { task: 'generate', target: `${screens}/${pascal}.skeleton.js`, template: 'screen/skeleton.hs' },
       { task: 'generate', target: `${screens}/${pascal}.styles.js`, template: 'screen/styles.hs' },
       {
         task: 'modify',

@@ -9,7 +9,7 @@ import styles from './{{pascalCased}}.styles';
 export class {{pascalCased}} extends Component {
   render() {
     return (
-      <div>
+      <React.Fragment>
         <Helmet>
           <title>{{pascalCased}} screen</title>
           <meta name="description" content="{{pascalCased}} screen description" />
@@ -19,9 +19,9 @@ export class {{pascalCased}} extends Component {
           <Typography type="title">Welcome to the "{{pascalCased}}" screen</Typography>
         </header>
         <Typography component="p">
-          To get started, edit <code>src/screens/{{pascalCased}}/{{pascalCased}}.js</code> and save to reload.
+          To get started, edit <code>src/screens/{{pascalCased}}/{{pascalCased}}.jsx</code> and save to reload.
         </Typography>
-      </div>
+      </React.Fragment>
     );
   }
 }
