@@ -1,36 +1,25 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { providers } from '../../utils';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { makeStyles } from '@material-ui/styles';
+import * as PropTypes from 'prop-types';
 import styles from './{{pascalCased}}.styles';
 
-class {{pascalCased}} extends Component {
-  static propTypes = {};
+const useStyles = makeStyles(styles);
 
-  static defaultProps = {};
+export default function {{pascalCased}} () {
+  const pathname = useSelector(state => state.router.location.pathname, shallowEqual);
+  const dispatch = useDispatch();
+  const { t }    = useTranslation();
+  const classes  = useStyles();
 
-  render() {
-    return (
-      <div>
-        <span>Hello from component/{{pascalCased}}/{{pascalCased}}.jsx!</span>
-      </div>
-    );
-  }
+  return (
+    <div className={classes.root}>
+      <span>{t('hello')} from container/{{pascalCased}}/{{pascalCased}}.jsx!</span>
+    </div>
+  );
 }
 
-const mapStateToProps = state => {
-  return {
-  };
-};
+{{pascalCased}}.propTypes = {};
 
-const mapDispatchToProps = dispatch => {
-  return {
-  };
-};
-
-export default providers(
-  {{pascalCased}},
-  withStyles(styles),
-  connect(mapStateToProps, mapDispatchToProps)
-);
+{{pascalCased}}.defaultProps = {};

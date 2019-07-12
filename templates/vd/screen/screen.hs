@@ -1,43 +1,33 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { Helmet } from 'react-helmet';
-import { providers } from '../../utils';
 import styles from './{{pascalCased}}.styles';
 
-export class {{pascalCased}} extends Component {
-  render() {
-    return (
-      <React.Fragment>
-        <Helmet>
-          <title>{{pascalCased}} screen</title>
-          <meta name="description" content="{{pascalCased}} screen description" />
-          <meta property="og:title" content="{{pascalCased}}" />
-        </Helmet>
-        <header>
-          <Typography type="title">Welcome to the "{{pascalCased}}" screen</Typography>
-        </header>
-        <Typography component="p">
-          To get started, edit <code>src/screens/{{pascalCased}}/{{pascalCased}}.jsx</code> and save to reload.
-        </Typography>
-      </React.Fragment>
-    );
-  }
+const useStyles = makeStyles(styles);
+
+export default function {{pascalCased}} () {
+  const pathname = useSelector(state => state.router.location.pathname, shallowEqual);
+  const classes  = useStyles();
+  const dispatch = useDispatch();
+
+  return (
+    <React.Fragment>
+      <Helmet>
+        <title>{{pascalCased}} screen</title>
+        <meta name="description" content="{{pascalCased}} screen description" />
+        <meta property="og:title" content="{{pascalCased}}" />
+      </Helmet>
+      <header>
+        <Typography type="title">Welcome to the "{{pascalCased}}" screen</Typography>
+      </header>
+      <Typography paragraph>
+        To get started, edit <code>src/screens/{{pascalCased}}/{{pascalCased}}.jsx</code> and save to reload.
+      </Typography>
+      <Typography paragraph>
+        Your current location is {pathname}
+      </Typography>
+    </React.Fragment>
+  );
 }
-
-const mapStateToProps = state => {
-  return {
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-  };
-};
-
-export default providers(
-  {{pascalCased}},
-  withStyles(styles),
-  connect(mapStateToProps, mapDispatchToProps)
-);

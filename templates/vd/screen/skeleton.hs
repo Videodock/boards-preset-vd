@@ -1,26 +1,33 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-import { providers } from '../../utils';
+import { makeStyles } from '@material-ui/styles';
+import { Helmet } from 'react-helmet';
 import styles from './{{pascalCased}}.styles';
 
-export class {{pascalCased}} extends Component {
-  render() {
-    return (
-      <React.Fragment>
-        <Typography component="p">
-          {{pascalCased}} screen skeleton. This component can be rendered while the JS chunk is being loaded.<br />
-          Prevent dependencies in this component and only render the component skeleton. <br />
-          <br />
-          <br/>
-          edit this file: <code>src/screens/{{pascalCased}}/{{pascalCased}}.skeleton.jsx</code>
-        </Typography>
-      </React.Fragment>
-    );
-  }
-}
+const useStyles = makeStyles(styles);
 
-export default providers(
-  {{pascalCased}},
-  withStyles(styles),
-);
+export default function {{pascalCased}} () {
+  const pathname = useSelector(state => state.router.location.pathname, shallowEqual);
+  const classes  = useStyles();
+  const dispatch = useDispatch();
+
+  return (
+    <React.Fragment>
+      <Helmet>
+        <title>{{pascalCased}} screen</title>
+        <meta name="description" content="{{pascalCased}} screen description" />
+        <meta property="og:title" content="{{pascalCased}}" />
+      </Helmet>
+      <header>
+        <Typography type="title">Welcome to the "{{pascalCased}}" screen skeleton</Typography>
+      </header>
+      <Typography paragraph>
+        To get started, edit <code>src/screens/{{pascalCased}}/{{pascalCased}}.skeleton.jsx</code> and save to reload.
+      </Typography>
+      <Typography paragraph>
+        Your current location is {pathname}
+      </Typography>
+    </React.Fragment>
+  );
+}
