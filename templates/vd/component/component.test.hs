@@ -1,10 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { baseProvided } from '../../testUtils';
+import { render } from '../../testUtils';
 import {{pascalCased}} from './{{pascalCased}}';
 
-test('renders without crashing', () => {
-  const div = document.createElement('div');
+describe('<{{pascalCased}} />', () => {
+  test('renders and matches snapshot', () => {
+    const { container } = render(<{{pascalCased}} />);
 
-  ReactDOM.render(baseProvided(<{{pascalCased}} />), div);
+    expect(container.firstChild).toMatchSnapshot();
+  });
+
+  // add your unit tests here
 });
