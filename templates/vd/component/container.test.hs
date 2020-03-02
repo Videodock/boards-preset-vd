@@ -1,10 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { provided } from '../../testUtils';
+import configureMockStore from 'redux-mock-store';
+import { renderWithStore } from '../../testUtils';
 import {{pascalCased}} from './{{pascalCased}}';
 
-test('renders without crashing', () => {
-  const div = document.createElement('div');
+const mockStore   = configureMockStore();
+const createStore = store => mockStore({
+  ...store,
+});
 
-  ReactDOM.render(provided(<{{pascalCased}} />), div);
+describe('<{{pascalCased}} />', () => {
+  it('renders and matches the snapshot', () => {
+    const { container } = renderWithStore(<{{pascalCased}} />, createStore({}));
+
+    expect(container).toMatchSnapshot();
+  });
 });

@@ -134,26 +134,61 @@ module.exports = {
     actionCreator: [
       { definedTask: 'vd:typeUpper' },
       {
-        task: 'modify',
-        target: `${redux}/${pascal}.actions.js`,
-        patch: [
-          {
-            pattern: /\s$/,
-            append: '\nexport const {{type}} = () => ({ type: types.{{typeUpper}} });\n'
-          }
-        ]
+        dynamicTask: params => ({
+          task: 'modify',
+          target: `${redux}/${pascal}.actions.js`,
+          patch: [
+            {
+              pattern: /\s$/,
+              custom: (match) => {
+                const args = params.arguments || (params.args ? params.args.split('|') : undefined);
+
+                if (args) {
+                  const arguments = args.join(', ');
+                  const signature = args.length > 1 ? `(${arguments})` : arguments;
+
+                  return match + `\nexport const {{type}} = ${signature} => ({ type: types.{{typeUpper}}, ${arguments} });\n`;
+                }
+
+                return match + '\nexport const {{type}} = () => ({ type: types.{{typeUpper}} });\n'
+              }
+            }
+          ]
+        }),
       }
     ],
 
     reducer: {
-      task: 'modify',
-      target: `${redux}/${pascal}.reducers.js`,
-      patch: [
-        {
-          pattern: /\s$/,
-          append: '\nexport const {{type}} = state => state;\n'
-        }
-      ]
+      dynamicTask: params => ({
+        task  : 'modify',
+        target: `${redux}/${pascal}.reducers.js`,
+        patch : [
+          {
+            pattern: /\s$/,
+            custom : (match) => {
+              if (params.api && /FAILURE$/.test(params.typeUpper)) {
+                return match + '\nexport const {{type}} = (state, { payload }) => state.update(\'{{originalType}}\', {{originalType}} => {\n' +
+                  '  return {{originalType}}.merge({ loading: false, error: payload });\n' +
+                  '});\n';
+              }
+
+              if (params.api && /SUCCESS/.test(params.typeUpper)) {
+                return match + '\nexport const {{type}} = (state, { payload }) => state.update(\'{{originalType}}\', {{originalType}} => {\n' +
+                  '  return {{originalType}}.merge({ loading: false, data: payload });\n' +
+                  '});\n';
+              }
+
+              if (params.api) {
+                return match + '\nexport const {{type}} = state => state.update(\'{{originalType}}\', {{originalType}} => {\n' +
+                  '  return {{originalType}}.merge({ loading: true });\n' +
+                  '});\n';
+              }
+
+              return match + '\nexport const {{type}} = state => state;\n';
+            }
+          }
+        ]
+      }),
     },
 
     sagas: [
@@ -225,15 +260,24 @@ module.exports = {
 
     api: [
       { definedTask: 'vd:typeUpper' },
-      { definedTask: 'vd:fullAction', sync: true },
+      { definedTask: 'vd:fullAction', prepare: params => {
+          params.api = true;
+          params.originalType = params.type;
+      }, sync: true },
       {
         definedTask: 'vd:action', prepare: params => {
-          params.type += 'Success'
+          params.api = true;
+          params.originalType = params.type;
+          params.type += 'Success';
+          params.arguments = ['payload'];
         }, sync: true
       },
       {
         definedTask: 'vd:action', prepare: params => {
-          params.type += 'Failure'
+          params.api = true;
+          params.originalType = params.type;
+          params.type += 'Failure';
+          params.arguments = ['payload'];
         }, sync: true
       },
     ],
