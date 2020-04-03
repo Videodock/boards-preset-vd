@@ -73,10 +73,10 @@ module.exports = {
     redux: [
       {
         task: 'modify',
-        target: 'redux/index.js',
+        target: 'redux/rootReducer.js',
         patch: [
           {
-            pattern: /}\);\s*const store/,
+            pattern: /}\);/,
             prepend: `  {{name}}: require('./${pascal}').reducer,\n`
           }
         ]
