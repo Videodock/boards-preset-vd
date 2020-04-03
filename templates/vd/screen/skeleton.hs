@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet';
 import styles from './{{pascalCased}}.styles';
 
